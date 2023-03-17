@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <title>CH Máquina</title>
+    <link rel="shortcut icon" href="img/fav.png">
+    <meta charset="utf-8" />
+    <meta name="description" content="protoWeb" />
+    <meta name="keywords" content="HTML5,CSS3,Javascript" />
+    <link
+        href="https://fonts.googleapis.com/css?family=Caveat|Permanent+Marker|Press+Start+2P|Ubuntu+Mono|Gloria + Hallelujah|Electrolize"
+        rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+    <script async src="https://drv.tw/inc/wd.js"></script>
+    <script async src="https://drv.tw/inc/wd.js"></script>
+    <script async src="https://drv.tw/inc/wd.js"></script>
+    <script defer src="./resources/js/index.js"></script>
+</head>
+
+<body id="cuerpo">
+
+    <div id="form">
+        <p class="tit">CH Máquina</p>
+
+
+        <div align="left" id="botones">
+            <button class="car"><img align="left" src="./resources/images/cargar.png" height="20" width="20">Cargar
+                Sistema</button>
+            <label>Kernel: </label>
+            <input type="number" id="ker" placeholder="Kernel" id="cod">
+            <label>Memoria: </label>
+            <input type="number" id="mem" placeholder="Memoria" id="cod">
+
+            <select id="algP">
+                <option value="" selected="selected">FCFS</option>
+
+                <option value="windows">RR</option>
+                <option value="mac">JFS</option>
+                <option value="linux">SRTN</option>
+
+            </select>
+            <select id="algM">
+                <option value="" selected="selected">Variable</option>
+
+            </select>
+
+            <button class="ver"><img align="left" src="./resources/images/verificacion.png" height="20"
+                    width="20">Verificar</button>
+            <button class="com"><img align="left" src="./resources/images/compilqr.png" height="20"
+                    width="20">Compilar</button>
+            <button class="pas"><img align="left" src="./resources/images/paso.png" height="20" width="20">Paso a
+                Paso</button>
+            <button class="new"><img align="left" src="./resources/images/nuevo.png" height="20"
+                    width="20">Nuevo</button>
+            <button class="gu"><img align="left" src="./resources/images/guardar.png" height="20"
+                    width="20">Guardar</button>
+            <input type="file" id="ab" name="files[]" accept=".ch" multiple onchange="filesInfo()" />
+        </div>
+        <div id="tab">
+            <table id="tabla" border=1>
+                <thead>
+                    <tr>
+                        <td align="center" style="font-family: 'Electrolize', cursive;" colspan="2">Vector de Memoria
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Dirección</th>
+                        <th>Dato</th>
+                    </tr>
+                </thead>
+                <tbody id="elementsList"></tbody>
+            </table>
+        </div>
+
+        <div id="ta2">
+
+            <textarea readonly id="resul" placeholder="Salida..."></textarea>
+            <textarea readonly id="imp" placeholder="Impresion..."></textarea>
+
+        </div>
+
+
+        <div id="ta">
+            <textarea id="text" placeholder="Codigo..." onfocus="rtext()"></textarea>
+            <textarea readonly id="err" placeholder="Errores..."></textarea>
+        </div>
+        <div id="ta1">
+            <textarea readonly id="var" placeholder="Variables..."></textarea>
+            <textarea readonly id="eti" placeholder="Etiquetas..."></textarea>
+        </div>
+
+    </div>
+
+    <style type="text/css">
+        body {
+            background-color: rgb(0, 0, 0);
+            background: url("./resources/images/fondo.png") no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            width: 100%;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #DDDDDD;
+            border-radius: 1em 0em 1em 0em;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: white;
+            cursor: ns-resize;
+        }
+
+        /* ::-webkit-scrollbar-track {
+            background-color: rgb(221, 55, 40);
+        } */
+
+        ::-webkit-scrollbar-button {
+            background-color: #627F98;
+        }
+
+        textarea {
+            resize: none;
+            border: 2px solid rgb(204, 86, 18);
+            padding: 3px;
+            transition-property: all;
+            transition-duration: 500ms;
+            transition-timing-function: ease-out;
+            transition-delay: 20ms;
+        }
+
+        textarea:hover,
+        #resul:hover {
+            border: 3px dotted #67F0FF;
+            border-radius: 1em 0em 1em 0em;
+        }
+
+        table,
+        td,
+        tr {
+            border: 1px solid rgb(201, 58, 58);
+            border-spacing: 0;
+            padding: 3px;
+            font-family: 'Ubuntu Mono', cursive;
+            font-weight: bold;
+            color: white;
+        }
+
+        label,
+        input {
+            font-family: 'Electrolize', cursive;
+            font-weight: bold;
+        }
+
+        label {
+            color: white;
+            font-family: 'Electrolize', cursive;
+        }
+
+        button,
+        #ab {
+            border: 2px outset rgb(185, 73, 58);
+            font-size: 0.9em;
+            font-weight: bold;
+            font-family: 'Electrolize', monospace;
+            transition-property: all;
+            transition-duration: 500ms;
+            transition-timing-function: ease-out;
+            transition-delay: 20ms;
+        }
+
+        button:hover {
+            background-color: white;
+            cursor: pointer;
+            border: 2px outset #627F98;
+            border-radius: 1em 0em 1em 0em;
+            filter: drop-shadow(3px 3px 3px #0095FF);
+        }
+
+        button:active {
+            background-color: rgb(243, 60, 14);
+            cursor: pointer;
+        }
+
+        #algP,
+        #algM {
+            width: 50px;
+            cursor: pointer;
+            font-family: 'Electrolize', monospace;
+            font-weight: bold;
+        }
+
+        #ab {
+            width: 250px;
+            background-color: rgb(212, 64, 19);
+            color: white;
+            cursor: pointer;
+        }
+
+        p {
+            margin: 5px;
+            color: white;
+        }
+
+        #ker,
+        #mem {
+            width: 40px;
+        }
+
+        #form {
+            width: 72%;
+            height: 2%;
+            padding: 0px 10px;
+            border: 2px solid rgba(197, 26, 26, 0.5);
+            background-color: #c60000;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 6px;
+            opacity: 9;
+        }
+
+        #botones {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        #ta {
+            width: 29%;
+            display: inline-block;
+            height: 600px;
+            opacity: 0;
+        }
+
+        #ta1 {
+            vertical-align: top;
+            width: 15%;
+            display: inline-block;
+            margin-left: 10px;
+            height: 600px;
+            opacity: 0;
+        }
+
+        #ta2 {
+            vertical-align: top;
+            width: 25%;
+            height: 600px;
+            display: inline-block;
+            margin-left: 30px;
+            opacity: 0;
+        }
+
+        #tab {
+            vertical-align: top;
+            width: 24%;
+            margin-left: 10px;
+            display: inline-block;
+            border: 4px outset #A0A2A4;
+            height: 615px;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            opacity: 0;
+        }
+
+        p {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        #text {
+            white-space: nowrap;
+            height: 65%;
+            width: 100%;
+            font-family: 'Electrolize', monospace;
+            font-size: 17px;
+            font-weight: bold;
+            overflow-x: auto;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        #err {
+            height: 22%;
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 10px;
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        #var {
+            font-family: 'Electrolize', sans-serif;
+            height: 50%;
+            width: 100%;
+            font-size: 12px;
+            font-weight: bold;
+            background-color: rgba(78, 78, 78, 0.8);
+            color: white;
+        }
+
+        #resul {
+            height: 65%;
+            width: 90%;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 13px;
+            color: rgb(0, 0, 0);
+            background-size: 100%;
+            border: 0px outset black;
+            text-indent: 10px;
+        }
+
+        #imp {
+            height: 22%;
+            width: 90%;
+            font-size: 15px;
+            font-family: 'Gloria Hallelujah', cursive;
+            background-size: 100%;
+            background-image: url("./resources/images/hoja.png");
+            text-indent: 20px;
+        }
+
+        #sal {
+            font-family: 'Gloria Hallelujah', cursive;
+            color: rgb(168, 175, 166);
+        }
+
+        #eti {
+            font-family: 'Electrolize', sans-serif;
+            height: 50%;
+            width: 100%;
+            font-weight: bold;
+            font-size: 12px;
+            background-color: rgba(78, 78, 78, 0.8);
+            color: white;
+        }
+
+        #tabla {
+            width: 100%;
+            height: 100%;
+            overflow-x: auto;
+        }
+    </style>
+
+</body>
+
+</html>
